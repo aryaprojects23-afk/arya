@@ -1,0 +1,64 @@
+/*
+HarvestLink 2.0 - RTL (Right-to-Left) Stylesheet for Urdu (ur) and Kashmiri (ks)
+Provides complete mirrored layouts, form inputs, tables, chevrons, and dialogs.
+*/
+
+html[dir="rtl"] body {
+  direction: rtl;
+  text-align: right;
+  font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Segoe UI", Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] .header-container,
+html[dir="rtl"] .gov-top-bar,
+html[dir="rtl"] .footer-container {
+  direction: rtl;
+}
+
+html[dir="rtl"] table.data-table th,
+html[dir="rtl"] table.data-table td {
+  text-align: right;
+}
+
+html[dir="rtl"] .lang-select {
+  padding: 8px 12px 8px 32px;
+}
+
+html[dir="rtl"] .lang-chevron {
+  right: auto;
+  left: 10px;
+}
+
+html[dir="rtl"] .footer-attribution {
+  border-left: none;
+  border-right: 3px solid var(--accent-gold);
+}
+
+html[dir="rtl"] .btn {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .nav-link {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .calc-grid {
+  direction: rtl;
+}
+
+html[dir="rtl"] .produce-body {
+  text-align: right;
+}
+
+html[dir="rtl"] .price-display {
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+html[dir="rtl"] .modal-header {
+  flex-direction: row-reverse;
+}
+
+html[dir="rtl"] .alert-banner {
+  flex-direction: row-reverse;
+}

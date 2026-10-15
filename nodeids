@@ -1,0 +1,22 @@
+[
+  "tests/test_commodity_search.py::test_autocomplete_suggestions",
+  "tests/test_commodity_search.py::test_catalog_retrieval_with_varieties",
+  "tests/test_commodity_search.py::test_multilingual_search_aliases",
+  "tests/test_gov_market_service.py::test_adapter_record_normalization_and_idempotency",
+  "tests/test_gov_market_service.py::test_mandi_trends_calculation",
+  "tests/test_gov_market_service.py::test_nearby_mandi_comparisons",
+  "tests/test_gov_market_service.py::test_provider_health_monitoring",
+  "tests/test_gov_market_service.py::test_query_market_prices_with_filters",
+  "tests/test_i18n.py::test_all_22_locales_exist",
+  "tests/test_i18n.py::test_rtl_layout_configuration",
+  "tests/test_i18n.py::test_translation_completeness_and_key_parity",
+  "tests/test_i18n.py::test_translation_reporting_service",
+  "tests/test_marketplace_api.py::test_direct_order_placement_and_stock_deduction",
+  "tests/test_marketplace_api.py::test_farmer_listing_creation_and_query",
+  "tests/test_marketplace_api.py::test_user_authentication_and_roles",
+  "tests/test_price_comparison.py::test_price_comparison_above_modal",
+  "tests/test_price_comparison.py::test_price_comparison_below_modal",
+  "tests/test_price_comparison.py::test_price_comparison_validation_errors",
+  "tests/test_price_comparison.py::test_price_per_kg_normalization",
+  "tests/test_price_comparison.py::test_unit_normalization"
+]
