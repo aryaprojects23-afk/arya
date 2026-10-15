@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>HarvestLink 2.0 - Multilingual Farmer Marketplace & Official Government Mandi Prices</title>
+  
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="/static/css/harvestlink.css">
+  
+  <!-- RTL Stylesheet (Enabled automatically for Urdu & Kashmiri) -->
+  <link id="rtl-stylesheet" rel="stylesheet" href="/static/css/rtl.css" disabled>
+
+  <!-- Google Fonts for Indic Scripts & Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Official Government Attribution Top Ribbon -->
+  <div class="gov-top-bar">
+    <div class="gov-badge">
+      <span>🏛️</span>
+      <span>Open Government Data Platform India (data.gov.in) | Agmarknet APMC Daily Wholesale Prices</span>
+    </div>
+    <div class="gov-links">
+      <span id="provider-health-badge" class="badge badge-live">OGD Portal: Synchronized</span>
+      <a href="https://agmarknet.gov.in/" target="_blank" rel="noopener">agmarknet.gov.in ↗</a>
+      <a href="https://data.gov.in/" target="_blank" rel="noopener">data.gov.in ↗</a>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo & Title -->
+      <div class="brand-section">
+        <div class="brand-logo-icon">🌾</div>
+        <div class="brand-text">
+          <h1>
+            <span data-i18n="meta.brand">HarvestLink 2.0</span>
+            <span class="brand-badge">Official Agmarknet</span>
+          </h1>
+          <div class="brand-tagline" data-i18n="meta.tagline">
+            Direct Farmer Marketplace + Official Government Mandi Prices
+          </div>
+        </div>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav">
+        <button class="nav-link active" data-nav-view="home" data-i18n="nav.home">Home</button>
+        <button class="nav-link" data-nav-view="mandi" data-i18n="nav.mandi_prices">Government Mandi Prices</button>
+        <button class="nav-link" data-nav-view="compare" data-i18n="nav.know_your_price">Know Your Mandi Price</button>
+        <button class="nav-link" data-nav-view="marketplace" data-i18n="nav.marketplace">Direct Marketplace</button>
+        <button class="nav-link" data-nav-view="farmer_dashboard" data-i18n="nav.farmer_dashboard">Farmer Dashboard</button>
+        <button class="nav-link" data-nav-view="completeness" data-i18n="nav.completeness_dashboard">Languages</button>
+      </nav>
+
+      <!-- Actions: 22 Languages Dropdown, Demo Role Switcher, Cart Pill -->
+      <div class="header-actions">
+        
+        <!-- Language Selector -->
+        <div class="lang-selector-wrapper" title="Choose Interface Language">
+          <select class="lang-select" aria-label="Select Language">
+            <!-- Dynamically populated with 22 languages and native scripts -->
+          </select>
+          <span class="lang-chevron">▼</span>
+        </div>
+
+        <!-- Demo Persona Switcher -->
+        <select id="demo-role-selector" class="demo-role-select" title="Switch Demo Account Role">
+          <!-- Populated from /api/auth/demo-users -->
+        </select>
+
+        <!-- Cart Pill -->
+        <button id="btn-header-cart" class="cart-pill" aria-label="View Shopping Cart">
+          <span>🛒</span>
+          <span id="header-cart-count" class="cart-badge" style="display:none;">0</span>
+        </button>
+
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- Active User & Demonstration Region Pill -->
+    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+      <div id="active-user-badge" style="font-size:13px; color:var(--text-muted);">
+        <strong>👤 Ramesh Patel (FARMER)</strong>
+      </div>
+      <div style="font-size:13px; color:#475569; display:flex; gap:12px; align-items:center;">
+        <span>📍 Demo Region: <strong>Chittoor, Andhra Pradesh</strong></span>
+        <button class="btn btn-light btn-sm" onclick="document.getElementById('report-modal').classList.add('active');" style="font-size:12px; padding:4px 8px; min-height:auto;">
+          ✍️ Report Translation
+        </button>
+      </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: HOME VIEW (HERO & QUICK LAUNCHPAD)                           -->
+    <!-- ===================================================================== -->
+    <section id="view-home" class="view-section active">
+      
+      <!-- Hero Banner -->
+      <div class="hero-card">
+        <div class="hero-badge-pill" data-i18n="hero.badge">Empowering Bharat's Farmers</div>
+        <h2 class="hero-title" data-i18n="hero.title">Fair Prices for Farmers, Fresh Produce for Direct Buyers</h2>
+        <p class="hero-subtitle" data-i18n="hero.subtitle">
+          Eliminate unnecessary middlemen. Trade directly with verified farmers, backed by real-time official Government of India Agmarknet mandi prices.
+        </p>
+
+        <!-- Call to Actions -->
+        <div class="hero-actions">
+          <button class="btn btn-secondary" onclick="App.switchView('mandi')" data-i18n="hero.btn_explore_mandi">
+            📊 View Mandi Prices
+          </button>
+          <button class="btn btn-light" onclick="App.switchView('compare')" data-i18n="hero.btn_compare_price">
+            ⚖️ Compare My Crop Price
+          </button>
+          <button class="btn btn-primary" onclick="App.switchView('marketplace')" data-i18n="hero.btn_browse_produce" style="background-color:#15803d;">
+            🛒 Browse Farm Produce
+          </button>
+        </div>
+
+        <!-- Trust Statistics -->
+        <div class="hero-stats">
+          <div class="stat-box">
+            <div class="stat-num">3,200+</div>
+            <div class="stat-label" data-i18n="hero.stat_mandis">Mandis Tracked (Agmarknet)</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">22</div>
+            <div class="stat-label" data-i18n="hero.stat_languages">Indian Languages Supported</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">300+</div>
+            <div class="stat-label" data-i18n="hero.stat_commodities">Agri Commodities & Varieties</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-num">0%</div>
+            <div class="stat-label">Middleman Commission</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Launch Features Grid -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-bottom:30px;">
+        
+        <div class="card" style="margin-bottom:0;">
+          <div style="font-size:28px; margin-bottom:8px;">🏛️</div>
+          <h3 style="font-size:18px; margin-bottom:6px;">Official Government Mandi Rates</h3>
+          <p style="font-size:14px; color:#64748b; margin-bottom:14px; line-height:1.5;">
+            Direct integration with the Open Government Data Platform India (data.gov.in) and Agmarknet APMC market yards. Real daily min, max, and modal wholesale prices.
+          </p>
+          <button class="btn btn-light btn-sm" onclick="App.switchView('mandi')">Explore Mandi Prices →</button>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div style="font-size:28px; margin-bottom:8px;">⚖️</div>
+          <h3 style="font-size:18px; margin-bottom:6px;">"Know Your Mandi Price" Tool</h3>
+          <p style="font-size:14px; color:#64748b; margin-bottom:14px; line-height:1.5;">
+            Input your crop, variety, and proposed selling rate. Our engine normalizes quintals to kilograms and calculates your price difference and gross revenue impact against official mandi rates.
+          </p>
+          <button class="btn btn-light btn-sm" onclick="App.switchView('compare')">Run Price Comparison →</button>
+        </div>
+
+        <div class="card" style="margin-bottom:0;">
+          <div style="font-size:28px; margin-bottom:8px;">🤝</div>
+          <h3 style="font-size:18px; margin-bottom:6px;">Direct Farmer-to-Buyer Trading</h3>
+          <p style="font-size:14px; color:#64748b; margin-bottom:14px; line-height:1.5;">
+            Buy directly from Indian farmers in Chittoor, Pune, Nashik, Kolar, and beyond. Support wholesale quotes for restaurants, retailers, and bulk buyers.
+          </p>
+          <button class="btn btn-light btn-sm" onclick="App.switchView('marketplace')">Start Trading Produce →</button>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: GOVERNMENT MANDI PRICES VIEW                                 -->
+    <!-- ===================================================================== -->
+    <section id="view-mandi" class="view-section">
+      
+      <div class="section-header">
+        <h2 data-i18n="mandi.page_title">Official Government Mandi Prices</h2>
+        <p data-i18n="mandi.page_subtitle">
+          Real daily wholesale prices reported from Agricultural Produce Market Committees (APMC) across India via Agmarknet / OGD India.
+        </p>
+      </div>
+
+      <!-- Freshness & Synchronization Status Banner -->
+      <div id="mandi-freshness-banner" class="alert-banner success">
+        <span><strong>Live & Fresh Official Mandi Data</strong>: Verified APMC prices reported under Agmarknet standards.</span>
+      </div>
+
+      <!-- Filter Controls Card -->
+      <div class="filter-card">
+        <div class="filter-grid">
+          
+          <div class="form-group">
+            <label data-i18n="mandi.filter_state">Select State</label>
+            <select id="mandi-filter-state" class="form-control">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="mandi.filter_district">Select District</label>
+            <select id="mandi-filter-district" class="form-control">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label data-i18n="mandi.filter_commodity">Select Commodity</label>
+            <select id="mandi-filter-commodity" class="form-control">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Quick Search</label>
+            <input type="text" id="mandi-search-input" class="form-control" data-i18n-placeholder="mandi.search_placeholder" placeholder="Search crop in your language (e.g. Tomato, Tamatar)...">
+          </div>
+
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+          <div style="display:flex; gap:10px;">
+            <button id="btn-apply-mandi-filters" class="btn btn-primary" data-i18n="mandi.btn_filter">Apply Filters</button>
+            <button id="btn-reset-mandi-filters" class="btn btn-light" data-i18n="mandi.btn_reset">Reset</button>
+          </div>
+          <button id="btn-sync-gov-data" class="btn btn-secondary" data-i18n="mandi.btn_manual_sync">
+            🔄 Sync Live Government Data
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-i18n="mandi.col_commodity">Commodity & Variety</th>
+                <th data-i18n="mandi.col_market">Mandi / District</th>
+                <th data-i18n="mandi.col_state">State</th>
+                <th data-i18n="mandi.col_min_price">Min Price (₹/Q)</th>
+                <th data-i18n="mandi.col_max_price">Max Price (₹/Q)</th>
+                <th data-i18n="mandi.col_modal_price">Modal Price (₹/Q)</th>
+                <th data-i18n="mandi.col_kg_equiv">Modal (₹/kg)</th>
+                <th data-i18n="mandi.col_arrivals">Arrivals (Tonnes)</th>
+                <th data-i18n="mandi.col_date">Reported Date</th>
+              </tr>
+            </thead>
+            <tbody id="mandi-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Nearby Mandi Comparisons -->
+      <div class="card">
+        <h3 style="font-size:18px; margin-bottom:12px;" data-i18n="mandi.nearby_comparison_title">Nearby Mandi Price Comparison</h3>
+        <div id="nearby-mandis-container">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Historical Trends SVG Chart -->
+      <div class="card">
+        <h3 style="font-size:18px; margin-bottom:12px;" data-i18n="mandi.historical_trends_title">Price Movement & 7-Day / 30-Day Trends</h3>
+        <div id="mandi-trend-chart-container">
+          <!-- Responsive SVG trend chart rendered here -->
+        </div>
+      </div>
+
+      <!-- Data Source Attribution Note -->
+      <div class="footer-attribution" style="background:#ffffff; border:1px solid #e2e8f0; color:#475569;" data-i18n="mandi.official_attribution">
+        Source: Directorate of Marketing & Inspection (DMI), Ministry of Agriculture & Farmers Welfare, GoI via data.gov.in / Agmarknet.
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 3: "KNOW YOUR MANDI PRICE" CALCULATOR VIEW                       -->
+    <!-- ===================================================================== -->
+    <section id="view-compare" class="view-section">
+      
+      <div class="section-header">
+        <h2 data-i18n="compare.page_title">Know Your Mandi Price</h2>
+        <p data-i18n="compare.page_subtitle">
+          Compare your proposed farm selling price with official government modal wholesale rates before selling or listing.
+        </p>
+      </div>
+
+      <div class="calc-grid">
+        
+        <!-- Input Form -->
+        <div class="card">
+          <h3 style="font-size:18px; margin-bottom:16px;">Produce & Proposed Selling Parameters</h3>
+          
+          <div class="form-group" style="margin-bottom:14px;">
+            <label data-i18n="compare.crop_label">Select Agricultural Commodity</label>
+            <select id="compare-crop-select" class="form-control">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+            <div class="form-group">
+              <label data-i18n="compare.variety_label">Crop Variety</label>
+              <input type="text" id="compare-variety-input" class="form-control" value="Hybrid Choice">
+            </div>
+            <div class="form-group">
+              <label data-i18n="compare.grade_label">Produce Grade</label>
+              <select id="compare-grade-select" class="form-control">
+                <option value="Grade A">Grade A (Premium)</option>
+                <option value="FAQ">FAQ (Fair Average Quality)</option>
+                <option value="Grade B">Grade B</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
+            <div class="form-group">
+              <label data-i18n="compare.state_label">Your State</label>
+              <input type="text" id="compare-state-input" class="form-control" value="Andhra Pradesh">
+            </div>
+            <div class="form-group">
+              <label data-i18n="compare.district_label">Your District</label>
+              <input type="text" id="compare-district-input" class="form-control" value="Chittoor">
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:1.2fr 1fr; gap:12px; margin-bottom:14px;">
+            <div class="form-group">
+              <label data-i18n="compare.quantity_label">Expected Quantity</label>
+              <input type="number" id="compare-qty-input" class="form-control" value="1000" min="1">
+            </div>
+            <div class="form-group">
+              <label data-i18n="compare.unit_label">Selling Unit</label>
+              <select id="compare-unit-select" class="form-control">
+                <option value="kg">kg (Kilogram)</option>
+                <option value="quintal">Quintal (100 kg)</option>
+                <option value="crate">Crate (~25 kg)</option>
+                <option value="tonne">Tonne (1000 kg)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:20px;">
+            <label data-i18n="compare.proposed_price_label">Your Proposed Selling Price (₹)</label>
+            <input type="number" id="compare-price-input" class="form-control" value="28" min="0.1" step="0.5" style="font-size:18px; font-weight:700; color:var(--primary-dark);">
+            <small style="color:#64748b;" data-i18n="compare.unit_conversion_info">
+              Note: 1 Quintal = 100 kg. Government prices are officially recorded in ₹/Quintal and normalized here to ₹/kg.
+            </small>
+          </div>
+
+          <button id="btn-run-comparison" class="btn btn-primary" style="width:100%;" data-i18n="compare.btn_calculate">
+            ⚖️ Compare With Official Mandi Price
+          </button>
+        </div>
+
+        <!-- Result Card -->
+        <div id="compare-result-container">
+          <div style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:40px; text-align:center; color:#64748b;">
+            <div style="font-size:36px; margin-bottom:12px;">📊</div>
+            <h4 style="margin-bottom:6px;">Ready for Comparison</h4>
+            <p style="font-size:14px;">Click the button on the left to benchmark your price against official Agmarknet wholesale data.</p>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 4: DIRECT FARMER-TO-BUYER MARKETPLACE                           -->
+    <!-- ===================================================================== -->
+    <section id="view-marketplace" class="view-section">
+      
+      <div class="section-header">
+        <h2 data-i18n="marketplace.title">Direct Farmer-to-Buyer Marketplace</h2>
+        <p data-i18n="marketplace.subtitle">
+          Buy directly from local Indian farmers with zero middleman commissions and verified mandi price transparency.
+        </p>
+      </div>
+
+      <!-- Search & Category Filters -->
+      <div class="card" style="padding:16px;">
+        <div style="position:relative; margin-bottom:14px;">
+          <input type="text" id="market-search-input" class="form-control" data-i18n-placeholder="marketplace.search_box" placeholder="Search crops by English or regional name (e.g. Potato, Aloo, Batata, Thakkali)..." style="font-size:16px; padding:12px 16px;">
+          <!-- Multilingual Autocomplete Dropdown -->
+          <div id="search-autocomplete-box" style="display:none; position:absolute; top:100%; left:0; right:0; background:#ffffff; border:1px solid var(--border-color); border-radius:8px; z-index:90; box-shadow:var(--shadow-md); max-height:220px; overflow-y:auto;"></div>
+        </div>
+
+        <!-- Category Pills -->
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-light btn-sm category-pill active" data-category="all" data-i18n="marketplace.all_categories">All Categories</button>
+          <button class="btn btn-light btn-sm category-pill" data-category="vegetables" data-i18n="marketplace.cat_vegetables">Vegetables</button>
+          <button class="btn btn-light btn-sm category-pill" data-category="fruits" data-i18n="marketplace.cat_fruits">Fruits</button>
+          <button class="btn btn-light btn-sm category-pill" data-category="cereals" data-i18n="marketplace.cat_cereals">Cereals</button>
+          <button class="btn btn-light btn-sm category-pill" data-category="spices" data-i18n="marketplace.cat_spices">Spices</button>
+          <button class="btn btn-light btn-sm category-pill" data-category="commercial" data-i18n="marketplace.cat_commercial">Commercial</button>
+        </div>
+      </div>
+
+      <!-- Produce Grid -->
+      <div id="produce-cards-grid" class="produce-grid">
+        <!-- Populated dynamically -->
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 5: SHOPPING CART & DIRECT CHECKOUT VIEW                         -->
+    <!-- ===================================================================== -->
+    <section id="view-cart" class="view-section">
+      
+      <div class="section-header">
+        <h2 data-i18n="cart.title">Your Direct Purchase Cart</h2>
+        <p>Buy farm-fresh produce with direct farmer payment and tracked logistics.</p>
+      </div>
+
+      <div id="cart-view-container" style="display:grid; grid-template-columns:1.3fr 1fr; gap:24px;">
+        
+        <!-- Cart Line Items -->
+        <div>
+          <div id="cart-items-list">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+
+        <!-- Checkout & Order Summary -->
+        <div class="card" style="height:fit-content;">
+          <h3 style="font-size:18px; margin-bottom:14px;" data-i18n="cart.order_summary">Order Summary</h3>
+
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:14px;">
+            <span data-i18n="cart.subtotal">Subtotal:</span>
+            <span id="cart-subtotal" style="font-weight:700;">₹0</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; color:#15803d;">
+            <span data-i18n="cart.delivery_fee">Direct Farm Logistics:</span>
+            <span>Included</span>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; padding-top:12px; border-top:1.5px solid #e2e8f0; margin-bottom:20px; font-size:18px; font-weight:800; color:var(--primary-dark);">
+            <span data-i18n="cart.total_amount">Total Payable:</span>
+            <span id="cart-total">₹0</span>
+          </div>
+
+          <form id="form-checkout">
+            <h4 style="font-size:15px; margin-bottom:12px;" data-i18n="cart.delivery_details_title">Delivery & Contact Details</h4>
+
+            <div class="form-group" style="margin-bottom:10px;">
+              <label data-i18n="cart.address_label">Full Delivery Address</label>
+              <input type="text" id="order-address" class="form-control" value="Flat 402, Green Palm Residency, Tilak Road" required>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:10px;">
+              <div class="form-group">
+                <label data-i18n="cart.district_label">District</label>
+                <input type="text" id="order-district" class="form-control" value="Chittoor" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="cart.state_label">State</label>
+                <input type="text" id="order-state" class="form-control" value="Andhra Pradesh" required>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+              <div class="form-group">
+                <label data-i18n="cart.pincode_label">Pincode</label>
+                <input type="text" id="order-pincode" class="form-control" value="517001" required>
+              </div>
+              <div class="form-group">
+                <label data-i18n="cart.phone_label">Contact Phone</label>
+                <input type="tel" id="order-phone" class="form-control" value="9876543212" required>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:20px;">
+              <label data-i18n="cart.payment_method">Payment Method</label>
+              <select id="order-payment-method" class="form-control">
+                <option value="cash_on_delivery" data-i18n="cart.cod">Cash / UPI on Delivery</option>
+                <option value="upi" data-i18n="cart.upi">Direct UPI (PhonePe, GPay, Paytm)</option>
+                <option value="bank_transfer" data-i18n="cart.bank_transfer">Direct Bank Transfer (NEFT/IMPS)</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="cart.btn_place_order">
+              Confirm Direct Order
+            </button>
+          </form>
+
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 6: FARMER PORTAL & INVENTORY DASHBOARD VIEW                     -->
+    <!-- ===================================================================== -->
+    <section id="view-farmer_dashboard" class="view-section">
+      
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
+        <div>
+          <h2 data-i18n="farmer.dashboard_title">Farmer Portal & Inventory Management</h2>
+          <p style="color:#64748b;">Manage your fresh crop listings, view received orders, and verify mandi benchmark prices.</p>
+        </div>
+        <button class="btn btn-primary" onclick="document.getElementById('modal-add-listing').classList.add('active');" data-i18n="farmer.btn_new_listing">
+          ➕ Add New Crop Listing
+        </button>
+      </div>
+
+      <!-- KPI Summary Cards -->
+      <div id="farmer-stats-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:16px; margin-bottom:24px;">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Farmer Listings Table -->
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div style="padding:16px 20px; border-bottom:1px solid #e2e8f0; font-weight:700; color:var(--primary-dark); font-size:16px;">
+          My Active Produce Listings
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-i18n="farmer.table_crop">Produce / Variety</th>
+                <th data-i18n="farmer.table_price">Your Price (₹)</th>
+                <th data-i18n="farmer.table_stock">Available Stock</th>
+                <th data-i18n="farmer.table_mandi_modal">Mandi Benchmark (₹/kg)</th>
+                <th data-i18n="farmer.table_status">Status</th>
+                <th data-i18n="farmer.table_action">Action</th>
+              </tr>
+            </thead>
+            <tbody id="farmer-listings-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 7: LANGUAGE COMPLETENESS & LOCALIZATION AUDIT DASHBOARD        -->
+    <!-- ===================================================================== -->
+    <section id="view-completeness" class="view-section">
+      
+      <div class="section-header">
+        <h2 data-i18n="completeness.title">Language Completeness & Localization Dashboard</h2>
+        <p data-i18n="completeness.subtitle">
+          Real-time coverage audit for all 22 scheduled Indian languages with script family and text direction verification.
+        </p>
+      </div>
+
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th data-i18n="completeness.col_lang_code">ISO Code</th>
+                <th data-i18n="completeness.col_lang_name">Language</th>
+                <th data-i18n="completeness.col_native_name">Native Script</th>
+                <th data-i18n="completeness.col_script">Script Family</th>
+                <th data-i18n="completeness.col_direction">Text Direction</th>
+                <th data-i18n="completeness.col_total_keys">Total Keys</th>
+                <th data-i18n="completeness.col_translated_keys">Translated</th>
+                <th data-i18n="completeness.col_coverage">Coverage %</th>
+                <th data-i18n="completeness.col_status">Status</th>
+              </tr>
+            </thead>
+            <tbody id="completeness-table-body">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- MODALS                                                                  -->
+  <!-- ======================================================================= -->
+
+  <!-- Modal 1: Add New Produce Listing (Farmer) -->
+  <div id="modal-add-listing" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-i18n="farmer.modal_add_title">List Your Fresh Produce</h3>
+        <button class="modal-close-btn">✕</button>
+      </div>
+      <form id="form-add-listing">
+        <div class="form-group" style="margin-bottom:12px;">
+          <label data-i18n="farmer.field_commodity">Select Commodity</label>
+          <select id="listing-commodity" class="form-control" required>
+            <option value="tomato">Tomato</option>
+            <option value="onion">Onion</option>
+            <option value="potato">Potato</option>
+            <option value="green_chilli">Green Chilli</option>
+            <option value="mango">Mango</option>
+            <option value="banana">Banana</option>
+            <option value="rice_paddy">Rice (Paddy)</option>
+          </select>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div class="form-group">
+            <label data-i18n="farmer.field_variety">Crop Variety</label>
+            <input type="text" id="listing-variety" class="form-control" value="Hybrid" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="farmer.field_grade">Grade (Quality)</label>
+            <select id="listing-grade" class="form-control">
+              <option value="Grade A">Grade A</option>
+              <option value="FAQ">FAQ</option>
+              <option value="Grade B">Grade B</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Listing Title</label>
+          <input type="text" id="listing-title" class="form-control" value="Fresh Farm Tomatoes" required>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div class="form-group">
+            <label data-i18n="farmer.field_price">Price per Unit (₹)</label>
+            <input type="number" id="listing-price" class="form-control" value="25" min="1" step="0.5" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="farmer.field_unit">Selling Unit</label>
+            <select id="listing-unit" class="form-control">
+              <option value="kg">kg</option>
+              <option value="quintal">Quintal (100 kg)</option>
+              <option value="crate">Crate (~25 kg)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px;">
+          <div class="form-group">
+            <label data-i18n="farmer.field_quantity">Total Available Stock</label>
+            <input type="number" id="listing-quantity" class="form-control" value="2000" min="1" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="farmer.field_moq">Minimum Order (MOQ)</label>
+            <input type="number" id="listing-moq" class="form-control" value="25" min="1" required>
+          </div>
+        </div>
+
+        <!-- Live Mandi Reference Guidance Hint -->
+        <div class="alert-banner info" style="margin-bottom:16px;">
+          <span>💡 <strong>Live Mandi Guidance</strong>: Chittoor APMC modal wholesale rate for this commodity is currently <strong>₹22.00/kg (₹2,200/Q)</strong>.</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="farmer.btn_submit_listing">
+          Publish Produce Listing
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 2: Wholesale Quotation Request (B2B) -->
+  <div id="quote-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-i18n="quotes.request_quote_title">Submit Wholesale Quotation Request</h3>
+        <button class="modal-close-btn">✕</button>
+      </div>
+      <form id="form-submit-quote">
+        <input type="hidden" id="quote-farmer-id">
+        <input type="hidden" id="quote-commodity-id">
+        
+        <div style="font-weight:700; color:var(--primary-dark); margin-bottom:12px;" id="quote-produce-title">
+          Produce Title
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;">
+          <div class="form-group">
+            <label data-i18n="quotes.quantity_needed">Required Quantity</label>
+            <input type="number" id="quote-qty" class="form-control" value="500" min="1" required>
+          </div>
+          <div class="form-group">
+            <label data-i18n="quotes.target_price">Target Price (₹/unit)</label>
+            <input type="number" id="quote-target-price" class="form-control" value="22" step="0.5">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label data-i18n="quotes.notes">Packaging or Delivery Notes</label>
+          <textarea id="quote-notes" class="form-control" rows="3" placeholder="e.g. Standard wooden crates, delivery required by Saturday morning..."></textarea>
+        </div>
+
+        <button type="button" class="btn btn-primary" style="width:100%;" onclick="App.showToast('Wholesale quotation sent to farmer!', 'success'); document.getElementById('quote-modal').classList.remove('active');">
+          Send Quotation Request
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal 3: Report Translation Improvement -->
+  <div id="report-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 data-i18n="report.title">Report Translation Improvement</h3>
+        <button class="modal-close-btn">✕</button>
+      </div>
+      <form id="form-report-translation">
+        <p style="font-size:13px; color:#64748b; margin-bottom:14px;" data-i18n="report.subtitle">
+          Help us refine agricultural terminology in your regional dialect.
+        </p>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label data-i18n="report.key_label">Interface Element / Key</label>
+          <input type="text" id="report-key-input" class="form-control" value="mandi.col_modal_price" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label data-i18n="report.current_label">Current Translation</label>
+          <input type="text" id="report-current-input" class="form-control" value="Modal Price" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:12px;">
+          <label data-i18n="report.suggestion_label">Your Suggested Accurate Term</label>
+          <input type="text" id="report-suggested-input" class="form-control" placeholder="Enter accurate regional term" required>
+        </div>
+
+        <div class="form-group" style="margin-bottom:16px;">
+          <label data-i18n="report.notes_label">Context / Regional Nuance</label>
+          <textarea id="report-notes-input" class="form-control" rows="2" placeholder="e.g. In Rayalaseema mandis, this term is commonly spoken..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;" data-i18n="report.btn_submit">
+          Submit Suggestion
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Mobile Bottom Navigation Bar -->
+  <div class="mobile-nav-bar">
+    <div class="mobile-nav-item active" data-nav-view="home">
+      <span>🏠</span>
+      <span data-i18n="nav.home">Home</span>
+    </div>
+    <div class="mobile-nav-item" data-nav-view="mandi">
+      <span>📊</span>
+      <span data-i18n="nav.mandi_prices">Mandi</span>
+    </div>
+    <div class="mobile-nav-item" data-nav-view="compare">
+      <span>⚖️</span>
+      <span data-i18n="nav.know_your_price">Compare</span>
+    </div>
+    <div class="mobile-nav-item" data-nav-view="marketplace">
+      <span>🛒</span>
+      <span data-i18n="nav.marketplace">Trade</span>
+    </div>
+    <div class="mobile-nav-item" data-nav-view="farmer_dashboard">
+      <span>👨‍🌾</span>
+      <span data-i18n="nav.farmer_dashboard">Farmer</span>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="app-footer">
+    <div class="footer-container">
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; margin-bottom:20px;">
+        <div style="max-width:400px;">
+          <div style="font-size:18px; font-weight:800; color:#ffffff; margin-bottom:6px;">🌾 HarvestLink 2.0</div>
+          <p style="color:#a7f3d0; font-size:13px; line-height:1.6;" data-i18n="meta.description">
+            Connecting Indian farmers directly with buyers, restaurants, and wholesalers with real Agmarknet government market prices.
+          </p>
+        </div>
+        <div>
+          <div style="font-weight:700; color:#ffffff; margin-bottom:8px;">Supported Languages (22)</div>
+          <div style="font-size:12px; color:#a7f3d0; line-height:1.8;">
+            English, हिन्दी, తెలుగు, தமிழ், ಕನ್ನಡ, മലയാളം, বাংলা, मराठी, ગુજરાતી, ਪੰਜਾਬੀ, ଓଡ଼ିଆ, অসমীয়া, اردو, संस्कृतम्, کٲشُر, कोंकणी, মৈতৈলোন্, नेपाली, ᱥᱟᱱᱛᱟᱲᱤ, बड़ो, डोगरी, मैथिली.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-attribution" data-i18n="mandi.official_attribution">
+        Official Data Source: Directorate of Marketing & Inspection (DMI), Ministry of Agriculture & Farmers Welfare, Government of India, via Open Government Data (OGD) Platform India (data.gov.in / Agmarknet).
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; font-size:12px; color:#6ee7b7; border-top:1px solid rgba(255,255,255,0.1); padding-top:14px;">
+        <div>© 2026 HarvestLink 2.0. Built for Bharat's Agricultural Ecosystem.</div>
+        <div>All market references derived from official APMC reports.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/static/js/i18n.js"></script>
+  <script src="/static/js/mandi.js"></script>
+  <script src="/static/js/price_compare.js"></script>
+  <script src="/static/js/marketplace.js"></script>
+  <script src="/static/js/app.js"></script>
+
+</body>
+</html>
